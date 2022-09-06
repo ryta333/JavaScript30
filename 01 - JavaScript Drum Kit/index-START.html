@@ -58,7 +58,28 @@
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
 <script>
+  function play(e) {
+    // 选中音频
+    const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+    // 选中对应的显示框
+    const key = document.querySelector(`div[data-key="${e.keyCode}"]`);
+    if(!key) return;
+    key.classList.add('playing'); // 增加类名
+    audio.currentTime = 0; // 重置音频时间
+    audio.play(); // 播放
+  }
 
+  function removePlayingClass(e) {
+    if(e.propertyName !== 'transform') return; // transition 写了all 因此该处会有多个事件触发, 只要对应用一个取消类名即可
+    e.currentTarget.classList.remove('playing');
+  }
+
+  const keys = Array.from(document.querySelectorAll('.key'));
+  keys.forEach(key => {
+    key.addEventListener('transitionend', removePlayingClass)
+  })
+
+  window.addEventListener('keydown', play)
 </script>
 
 
