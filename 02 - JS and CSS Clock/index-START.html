@@ -57,16 +57,46 @@
     }
 
     .hand {
+      transform-origin: right;
       width: 50%;
       height: 6px;
       background: black;
       position: absolute;
       top: 50%;
+      transition: all 0.2s cubic-bezier(0.1, 2.7, 0.58, 1);
     }
 
   </style>
 
   <script>
+    const hour = document.querySelector('.hour-hand');
+    const min = document.querySelector('.min-hand');
+    const second = document.querySelector('.second-hand');
+
+
+    function update() {
+      const currentDate = new Date();
+      const h = currentDate.getHours();
+      const m = currentDate.getMinutes();
+      const s = currentDate.getSeconds();
+
+      let H = h / 12 * 360 + m / 60 * 30; // 每 60 分钟多加30 度
+      let M = m / 60 * 360 + s / 60 * 6; // 每 60 秒多 6 度
+      let S = s / 60 * 360;
+      
+      updateDegree(hour, H)
+      updateDegree(min, M)
+      updateDegree(second, S)
+    }
+
+    function updateDegree(dom, degree) {
+      dom.style.transform = `rotate(${degree + 90}deg)`
+    }
+
+    update();
+    setInterval(() => {
+      update()
+    }, 1000)
 
 
   </script>
